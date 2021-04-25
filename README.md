@@ -1,4 +1,4 @@
-# VC_trab2
+# Visão computacional: trabalho 2
 
 Segundo trabalho de visão computacional.
 
