@@ -65,7 +65,7 @@ def convolution(img, kernel, s=1, p=1):
     assert kheight%2==1, "wrong shape, exiting"
     assert kwidth==kheight, "wrong shape, exiting"
 
-    output = np.zeros((width_out, height_out), dtype='uint8')
+    output = np.zeros((width_out, height_out))
 
     if p>0:
         imagePadded = np.zeros((width + p*2, height + p*2))
@@ -81,8 +81,12 @@ def convolution(img, kernel, s=1, p=1):
 
 img    = Image.open('imgs/noisy.jpg')
 img    = np.array(img)
+
+img_bordas = Image.open('imgs/building.jpg')
+img_bordas = np.array(img_bordas)
+
 #kernel = np.array([[-1,-2,-1], [0,0,0], [1,2,1]], dtype='uint8')
-kernel = np.ones((3,3), dtype='uint8')/9
+kernel = np.ones((3,3))/9
 
 res = convolution(img, kernel, p=1)
 
@@ -97,39 +101,50 @@ if not os.path.exists('out'):
 
 plt.imshow(res, cmap='gray')
 plt.show()
-res = Image.fromarray(res)
+res = Image.fromarray(res.astype(np.uint8))
 res.save('out/a_3_3.png')
 
 
-kernel = np.ones((5,5), dtype='uint8')/25
+kernel = np.ones((5,5))/25
 res = convolution(img, kernel=kernel, p=2)
-
 
 plt.imshow(res, cmap='gray')
 plt.show()
-res = Image.fromarray(res)
+res = Image.fromarray(res.astype(np.uint8))
 res.save('out/a_5_5.png')
 
 kernel = getGaussianKernel(1)
 res = convolution(img, kernel=kernel, p=3)
 plt.imshow(res, cmap='gray')
 plt.show()
-res = Image.fromarray(res)
+res = Image.fromarray(res.astype(np.uint8))
 res.save('out/b_sigma_1.png')
 
 kernel = getGaussianKernel(2)
 res = convolution(img, kernel=kernel, p=6)
 plt.imshow(res, cmap='gray')
 plt.show()
-res = Image.fromarray(res)
+res = Image.fromarray(res.astype(np.uint8))
 res.save('out/b_sigma_2.png')
 
 kernel = getGaussianKernel(3)
 res = convolution(img, kernel=kernel, p=9)
 plt.imshow(res, cmap='gray')
 plt.show()
-res = Image.fromarray(res)
+res = Image.fromarray(res.astype(np.uint8))
 res.save('out/b_sigma_3.png')
 
-# print(img.shape)
-# print(res.shape)
+kernel_x = np.array(([[-1,0,1], [-2,0,2], [-1,0,1]]))
+kernel_y = np.array(([[-1,-2,-1], [0,0,0], [1,2,1]]))
+
+res_x = convolution(img_bordas, kernel=kernel_x, p=1)
+res_y = convolution(img_bordas, kernel=kernel_y, p=1)
+
+res = np.sqrt(res_x**2+res_y**2)
+
+plt.imshow(res, cmap='gray')
+plt.show()
+res = Image.fromarray(res.astype(np.uint8))
+res.save('out/sobel.png')
+
+
