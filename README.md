@@ -21,6 +21,12 @@ Segundo trabalho de visão computacional.
 ![Imagem Original](/ex1-convolucao/out/b_sigma_2.png)
 ![Imagem Original](/ex1-convolucao/out/b_sigma_3.png)
 
+- 1.2.c: O resultado da detecção de bordas utilizando o detector de bordas de *Sobel* segue abaixo.
+![Imagem Original](/ex1-convolucao/out/sobel.png)
+
+- 1.2.d: O resultado da detecção de bordas utilizando o detector de bordas de *Prewitt* segue abaixo.
+![Imagem Original](/ex1-convolucao/out/prewitt.png)
+
 As imagens de resultado possuem a mesma dimensão que a imagem de entrada visto aplicação de padding adequado ao tamanho do kernel (padding=floor(kernel size/2)).
 
 ### Exercício 2 - Segmentação com K-Means
