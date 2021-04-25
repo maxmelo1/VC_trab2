@@ -3,15 +3,47 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import cv2
 import os
+import math
 
+def getGaussianKernel(sigma=0.5):
+    size= int(6*sigma)
+    size = size if size%2==1 else size + 1
+
+    s = size//2
+    soma =0
+    idx=0
+
+    kernel = np.zeros((size,size))
+    print(size)
+    
+
+    for x in range(-s, 1+s):
+        idy = 0
+        for y in range(-s, 1+s):
+            kernel[idx, idy] = (1./(2*math.pi*sigma**2))*math.exp( - (x**2+y**2)/(2*sigma**2))
+            soma += kernel[idx, idy]
+            idy += 1
+        idx +=1
+
+    print(kernel)
+    print('soma', soma)
+    
+    kernel_n = kernel / soma
+    print(kernel_n)
+
+    # plt.imshow(kernel)
+    # plt.show()
+
+    # plt.imshow(kernel_n)
+    # plt.show()
+
+    return kernel
 
 def convolution(img, kernel, s=1, p=1):
     '''
     It runs a convolution in the img based on a given kernel
-    img a PIL image instance
-    kernel an array with odd dimensions
-    img: input image (expected as np array)
-    kernel: kernel to be applied in the convolution
+    img: a np array representing an image instance
+    kernel: an array with odd dimensions
     s: convolution stride
     p: convolution padding. Zero fill is applied.
     returns an convoluted image or None if no convolution can be applied
@@ -77,3 +109,27 @@ plt.imshow(res, cmap='gray')
 plt.show()
 res = Image.fromarray(res)
 res.save('out/a_5_5.png')
+
+kernel = getGaussianKernel(1)
+res = convolution(img, kernel=kernel, p=3)
+plt.imshow(res, cmap='gray')
+plt.show()
+res = Image.fromarray(res)
+res.save('out/b_sigma_1.png')
+
+kernel = getGaussianKernel(2)
+res = convolution(img, kernel=kernel, p=6)
+plt.imshow(res, cmap='gray')
+plt.show()
+res = Image.fromarray(res)
+res.save('out/b_sigma_2.png')
+
+kernel = getGaussianKernel(3)
+res = convolution(img, kernel=kernel, p=9)
+plt.imshow(res, cmap='gray')
+plt.show()
+res = Image.fromarray(res)
+res.save('out/b_sigma_3.png')
+
+# print(img.shape)
+# print(res.shape)
