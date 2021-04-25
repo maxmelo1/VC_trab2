@@ -148,3 +148,17 @@ res = Image.fromarray(res.astype(np.uint8))
 res.save('out/sobel.png')
 
 
+kernel_x = np.array(([[-1,0,1], [-1,0,1], [-1,0,1]]))
+kernel_y = np.array(([[1,1,1], [0,0,0], [-1,-1,-1]]))
+
+res_x = convolution(img_bordas, kernel=kernel_x, p=1)
+res_y = convolution(img_bordas, kernel=kernel_y, p=1)
+
+res = np.sqrt(res_x**2+res_y**2)
+plt.imshow(res, cmap='gray')
+plt.show()
+res = Image.fromarray(res.astype(np.uint8))
+res.save('out/prewitt.png')
+
+# print(img_bordas.shape)
+# print(res.shape)
